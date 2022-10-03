@@ -38,7 +38,7 @@ def mcd(a,b):
     elif a == 0 or b == 0: return max(a,b)
     else: return mcd(min(a,b), max(a,b) % min(a,b))
 
-def bezout_n(a,b,l1,l2,mcd,a0,b0):
+def bezout(a,b,l1,l2,mcd,a0,b0):
     if  a != mcd and b != mcd:
         c = max(a,b) // min(a,b)
         if a > b:
@@ -50,7 +50,7 @@ def bezout_n(a,b,l1,l2,mcd,a0,b0):
             l2[1] -= l1[1] *c
             b = b%a
         print(a,b,l1,l2)
-        return bezout_n(a,b,l1,l2,mcd,a0,b0)
+        return bezout(a,b,l1,l2,mcd,a0,b0)
     if mcd == l1[0]*a0 + l1[1]*b0:
         return(mcd, l1[0], l1[1])
     else:
@@ -59,7 +59,7 @@ def bezout_n(a,b,l1,l2,mcd,a0,b0):
 '''
 a=198
 b=74
-bezout_n(a,b,[1,0],[0,1], mcd(a,b),a,b)
+bezout(a,b,[1,0],[0,1], mcd(a,b),a,b)
 '''
 
 def coprimos(a,b):
@@ -76,6 +76,13 @@ def potencia_mod_p(base, exp, p):
         return (base ** exp) % p
     else:
         return (base ** exp) % p
+
+def inversa_mod_p(n,p):
+    if coprimos(n,p):
+        m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
+    else:
+        print("E")
+    return x
 
 def euler(n):
     contador = 0
