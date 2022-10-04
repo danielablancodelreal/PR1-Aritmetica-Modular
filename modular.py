@@ -1,5 +1,7 @@
+import sys
 import math
 
+################################ funciones #####################################
 def es_primo(n):
     if n <= 1: return False
     for i in range (2,int(math.sqrt(n)+1)):
@@ -61,7 +63,6 @@ a=198
 b=74
 bezout(a,b,[1,0],[0,1], mcd(a,b),a,b)
 '''
-
 def coprimos(a,b):
     if a%b == 0 or b%a == 0: return False
     elif a == 0 or b == 0: return False
@@ -78,10 +79,8 @@ def potencia_mod_p(base, exp, p):
         return (base ** exp) % p
 
 def inversa_mod_p(n,p):
-    if coprimos(n,p):
-        m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
-    else:
-        print("E")
+    if coprimos(n,p): m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
+    else: print("E") #######################################################################
     return x
 
 def euler(n):
@@ -94,10 +93,23 @@ def euler(n):
     return(contador)
 
 def legendre(n,p):
-    if n%p == 0:
-        return 0
-    elif math.sqrt(n%p) == int(math.sqrt(n%p)):
-        return 1
-    else:
-        return -1
+    if n%p == 0: return 0
+    elif math.sqrt(n%p) == int(math.sqrt(n%p)): return 1
+    else: return -1
 
+def resolver_sistema_congruencias(a,b,p):
+    a_ec = []
+    M = 1
+    for i in range(len(a)):
+        a_ec.append(inversa_mod_p(a[i],p[i])*b[i])
+        M *= p[i]
+        
+    lista = []
+    for j in range(len(a_ec)):
+        lista.append(inversa_mod_p((M/p[j]), p[j]))
+    
+    x = 0
+    for k in range(len(a_ec)):
+        x += a_ec[k]*lista[k]*(M/p[k])
+    
+    return (int(x%M), M)
