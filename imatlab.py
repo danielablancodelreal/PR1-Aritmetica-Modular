@@ -1,4 +1,5 @@
 import sys
+import re
 import modular
 
 def procesar_argumentos_entrada(argumentos):
@@ -15,8 +16,8 @@ def procesar_ficheros(argumentos):
     contenido = []
     automatico_lineas = 0
     # ficheros
-    fichero_salida = sys.argv[1]
-    fichero_entrada = sys.argv[2]
+    fichero_entrada = sys.argv[1]
+    fichero_salida = sys.argv[2]
     # abrimos el fichero de entrada y creamos el de salida.
     file = open(fichero_entrada, "r")
     contenido = file.readlines()
@@ -27,9 +28,15 @@ def procesar_ficheros(argumentos):
     ficheros = [fichero_salida, contenido, automatico_lineas]
     return ficheros
 
+def entero(operandos):
+    for num in operandos:
+        try: num = int(num)
+        except ValueError as error: raise error
+
 if __name__ == "__main__":
 
     salir = False
+    error = False
 
     # Miramos de que modo queremos que se ejecute el programa, por pantalla, o por ficheros
     modo = procesar_argumentos_entrada(sys.argv)
@@ -52,6 +59,7 @@ if __name__ == "__main__":
             # Leemos línea a línea
             contenido = ficheros[1]
             automatico_lineas = ficheros[2]
+            ficheros[2] += 1
 
             # Cuando no quiedan más lineas, se sale
             if automatico_lineas == len(contenido): salir = True
@@ -62,6 +70,20 @@ if __name__ == "__main__":
                 if entrada[-1] == "\n":
                     entrada = entrada[:-1]
 
-        ############################## DEFINIR ERROES GENERALES
-        
-        ############################## FUNCION VER QUE FUNCION ES
+        if not salir:
+
+            # Procesar entrada
+            try:
+                operacion = entrada.split("(")
+                op = operacion[0]
+                variables = re.findall(r'[(](.*?)[)]', entrada)
+                var = variables[0].split(",")
+            except: error = True
+
+            if not error:
+                operandos = []
+                # Los operandos no son enteros --> Error (NOP)
+                try: entero(operandos)
+                except: error = True
+
+            
