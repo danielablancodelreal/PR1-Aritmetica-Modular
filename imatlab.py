@@ -161,11 +161,11 @@ def procesar_operacion(argumentos):
                 else: raise error        
             return modular.resolver_sistema_congruencias(a,b,p)
         except: raise error 
-    
-    elif op == "raiz":
+
+    elif op == "mcd_n":
         ...
 
-    elif op == "ecCuadratica":
+    elif op == "raiz":
         ...
 
     else:

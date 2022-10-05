@@ -71,11 +71,12 @@ def coprimos(a,b):
 def potencia_mod_p(base, exp, p):
     if exp == p and es_primo(p):
         return (base % p)
-    elif es_primo(p):
-        exp = exp%(p-1)
-        return (base ** exp) % p
-    else:
-        return (base ** exp) % p
+    x = 1
+    while exp > 0:
+        if exp % 2 == 1: x = (x*base) % p
+        base = base**2 % p
+        exp = exp//2
+    return x % p
 
 def inversa_mod_p(n,p):
     if coprimos(n,p):
@@ -100,6 +101,9 @@ def legendre(n,p):
     else: return -1
 
 def resolver_sistema_congruencias(a,b,p):
+    if len(a)>1 and mcd_n(p,p[0],1) != 1:
+        print("Los modulos nos son coprimos uno a uno, se está ejecutando la función 12.")
+    
     a_ec = []
     M = 1
     for i in range(len(a)):
@@ -115,3 +119,55 @@ def resolver_sistema_congruencias(a,b,p):
         x += a_ec[k]*lista[k]*(M/p[k])
     
     return (int(x%M), M)
+
+def mcd_n(lista,a,n):
+    m = mcd(a,lista[n])
+    if n+1 == len(lista):
+        return m
+    return mcd_n(lista, m, n+1)
+
+    '''
+    lista = [678,936,816]
+    mcd_n(lista, lista[0], 1)
+    '''
+
+def raiz_mod_p(n,p):
+    if es_primo(p) and p != 2:
+        n %= p
+        if n == 0:
+            return n
+        elif n == 1:
+            return n, p-1
+        elif legendre(n, p) == 0:
+            return 0
+        elif legendre(n**(p-1), p) == 1:
+            for a in range(0,p):
+                w = (((a**2-n)%p)**((p-1)/2))%p
+                if int(w) == p-1:break
+            exponente = ctb((p+1)/2,2)
+            x1 = [a,1]
+            x2 = mult(x1,x1,a**2-n,p)
+            for i in range(1, len(exponente)):
+                if exponente[i] == 0:
+                    x2 = mult(x2,x1,a**2-n,p)
+                    x1 = mult(x1,x1,a**2-n,p)
+                else:
+                    x1 = mult(x1,x2,a**2-n,p)
+                    x2 = mult(x2,x2,a**2-n,p)
+            return (x1[0], -x1[0]%p)
+        else:
+            return False
+
+def mult(l1,l2,o,p):
+    return [(l1[0]*l2[0]+l1[1]*l2[1]*o)%p,(l1[0]*l2[1]+l1[1]*l2[0]*o)%p]
+
+def ctb(n,b):
+    if n<2:
+        return [n]
+    t = n
+    r = []
+    while t!=0:
+        r = [t%b] + r
+        t /= b
+    return r
+
