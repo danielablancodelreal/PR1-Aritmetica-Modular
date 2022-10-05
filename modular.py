@@ -37,7 +37,8 @@ factorizar(n, lista, exponentes)
 '''
 
 def mcd(a,b):
-    if a%b == 0 or b%a == 0: return min(a,b)
+    if a < 0 or b <0: return 1
+    elif a%b == 0 or b%a == 0: return min(a,b)
     elif a == 0 or b == 0: return max(a,b)
     else: return mcd(min(a,b), max(a,b) % min(a,b))
 
@@ -58,14 +59,11 @@ def bezout(a,b,l1,l2,mcd,a0,b0):
     else:
         return(mcd, l2[0], l2[1])
 
-'''
-a=198
-b=74
-bezout(a,b,[1,0],[0,1], mcd(a,b),a,b)
-'''
 def coprimos(a,b):
+    if a < 0: a *= -1
+    if b < 0: b *= -1
     if a == 1 or b == 1: return True
-    if a%b == 0 or b%a == 0: return False
+    elif a%b == 0 or b%a == 0: return False
     elif a == 0 or b == 0: return False
     else: coprimos(min(a,b), max(a,b) % min(a,b))
     return True
@@ -81,9 +79,11 @@ def potencia_mod_p(base, exp, p):
 
 def inversa_mod_p(n,p):
     if coprimos(n,p):
+        if n<0:
+            p -= n
+            n *= -1
         m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
         return x
-    else: print("E") #######################################################################
 
 def euler(n):
     contador = 0

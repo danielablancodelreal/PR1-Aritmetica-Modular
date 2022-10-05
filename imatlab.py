@@ -1,5 +1,6 @@
 from operator import not_
 import sys
+import re
 import modular
 import time
 
@@ -36,6 +37,7 @@ def procesar_entrada(entrada):
     
 def procesar_operacion(argumentos):
     op = argumentos[0]
+
     if op == "primo":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -46,6 +48,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "primos":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -57,6 +60,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "factorizar":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -67,6 +71,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "mcd":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -78,6 +83,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "coprimos":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -89,6 +95,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "pow":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -101,6 +108,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+    
     elif op == "inv":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -108,10 +116,13 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 n = argumentos[1][0]
                 p = argumentos[1][1]
-                return modular.inversa_mod_p(n,p)
+                r = modular.inversa_mod_p(n,p)
+                if r == None: return "NOP"
+                else: return r
             else: raise error
         except:
             raise error
+    
     elif op == "euler":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -122,6 +133,7 @@ def procesar_operacion(argumentos):
             else: raise error
         except:
             raise error
+
     elif op == "legendre":
         # Los operandos no son enteros --> Error (NOP)
         try:
@@ -131,14 +143,31 @@ def procesar_operacion(argumentos):
                 p = argumentos[1][1]
                 print(op,n,p)
             else: raise error
-        except:
-            raise error
+        except: raise error
+    
     elif op == "resolverSistema":
-        ...
+        arg = []
+        a = []
+        b = []
+        p = []
+        try:
+            for l in range(len(argumentos[1])):
+                arg.append(argumentos[1][l][argumentos[1][l].find("[")+1:argumentos[1][l].find("]")].split(";"))
+            for k in range(len(arg)):
+                if len(arg[k]) == 3:
+                    a.append(int(arg[k][0]))
+                    b.append(int(arg[k][1]))
+                    p.append(int(arg[k][2]))
+                else: raise error        
+            return modular.resolver_sistema_congruencias(a,b,p)
+        except: raise error 
+    
     elif op == "raiz":
         ...
+
     elif op == "ecCuadratica":
         ...
+
     else:
         raise error
 
@@ -168,6 +197,7 @@ if __name__ == "__main__":
     while not salir:
         
         error = False
+        exception = False
 
         if modo == 1:
 
@@ -185,7 +215,10 @@ if __name__ == "__main__":
                     r  = procesar_operacion(argumentos)
                     if r != None: print(r)
                 except: 
-                    print("NE")  
+                    if error:
+                        print("NE")  
+                    if exception:
+                        print("NOP")
                     
         else:
 
@@ -208,13 +241,7 @@ if __name__ == "__main__":
                     r  = procesar_operacion(argumentos)
                     if r != None: ficheros[1].write(str(r) + "\n")
                 except: 
-                    error = True
-                if not error:
-                    print(f"Realizando operacion {automatico_lineas}")
-                    try: ficheros[1].write(str(procesar_operacion(argumentos)) + "\n")
-                    except: error = True
-                
-                ficheros[1].write("NE\n")
+                    ficheros[1].write("NE\n")
     
     
     f = time.time()
