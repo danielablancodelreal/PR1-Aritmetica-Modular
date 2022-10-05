@@ -3,7 +3,8 @@ import math
 
 ################################ funciones #####################################
 def es_primo(n):
-    if n <= 1: return False
+    if n <= 1:
+        return False
     for i in range (2,int(math.sqrt(n)+1)):
         if n%i == 0: 
             return False
@@ -51,7 +52,6 @@ def bezout(a,b,l1,l2,mcd,a0,b0):
             l2[0] -= l1[0] *c
             l2[1] -= l1[1] *c
             b = b%a
-        print(a,b,l1,l2)
         return bezout(a,b,l1,l2,mcd,a0,b0)
     if mcd == l1[0]*a0 + l1[1]*b0:
         return(mcd, l1[0], l1[1])
@@ -64,6 +64,7 @@ b=74
 bezout(a,b,[1,0],[0,1], mcd(a,b),a,b)
 '''
 def coprimos(a,b):
+    if a == 1 or b == 1: return True
     if a%b == 0 or b%a == 0: return False
     elif a == 0 or b == 0: return False
     else: coprimos(min(a,b), max(a,b) % min(a,b))
@@ -79,9 +80,10 @@ def potencia_mod_p(base, exp, p):
         return (base ** exp) % p
 
 def inversa_mod_p(n,p):
-    if coprimos(n,p): m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
+    if coprimos(n,p):
+        m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
+        return x
     else: print("E") #######################################################################
-    return x
 
 def euler(n):
     contador = 0

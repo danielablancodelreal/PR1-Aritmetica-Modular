@@ -1,6 +1,7 @@
+from operator import not_
 import sys
-import re
 import modular
+import time
 
 def procesar_argumentos_entrada(argumentos):
     if len(sys.argv) == 1:
@@ -11,7 +12,7 @@ def procesar_argumentos_entrada(argumentos):
         modo = 2
     return modo
 
-def run_commands():
+def run_commands(argumentos):
     # ficheros
     fichero_entrada = sys.argv[1]
     fichero_salida = sys.argv[2]
@@ -33,64 +34,190 @@ def procesar_entrada(entrada):
         raise error
     return argumentos
     
-def procesar_operacion(op):
-    ...
+def procesar_operacion(argumentos):
+    op = argumentos[0]
+    if op == "primo":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 1:
+                n = argumentos[1][0]
+                return modular.es_primo(n)
+            else: raise error
+        except:
+            raise error
+    elif op == "primos":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 2:
+                a = argumentos[1][0]
+                b = argumentos[1][1]
+                print(op,a,b)
+            else: raise error
+        except:
+            raise error
+    elif op == "factorizar":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 1:
+                n = argumentos[1][0]
+                print(op,n)
+            else: raise error
+        except:
+            raise error
+    elif op == "mcd":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 2:
+                a = argumentos[1][0]
+                b = argumentos[1][1]
+                return modular.mcd(a,b)
+            else: raise error
+        except:
+            raise error
+    elif op == "coprimos":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 2:
+                a = argumentos[1][0]
+                b = argumentos[1][1]
+                return modular.coprimos(a,b)
+            else: raise error
+        except:
+            raise error
+    elif op == "pow":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 3:
+                base = argumentos[1][0]
+                exp = argumentos[1][1]
+                p = argumentos[1][2]
+                print(op,base,exp,p)
+            else: raise error
+        except:
+            raise error
+    elif op == "inv":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 2:
+                n = argumentos[1][0]
+                p = argumentos[1][1]
+                return modular.inversa_mod_p(n,p)
+            else: raise error
+        except:
+            raise error
+    elif op == "euler":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 1:
+                n = argumentos[1][0]
+                print(op,n)
+            else: raise error
+        except:
+            raise error
+    elif op == "legendre":
+        # Los operandos no son enteros --> Error (NOP)
+        try:
+            entero(argumentos[1])
+            if len(argumentos[1]) == 2:
+                n = argumentos[1][0]
+                p = argumentos[1][1]
+                print(op,n,p)
+            else: raise error
+        except:
+            raise error
+    elif op == "resolverSistema":
+        ...
+    elif op == "raiz":
+        ...
+    elif op == "ecCuadratica":
+        ...
+    else:
+        raise error
 
 def entero(operandos):
     for num in range(len(operandos)):
-        try: operandos[num] = int(operandos[num])
-        except error: raise error
+        try:
+            operandos[num] = int(operandos[num])
+        except:
+            raise error
 
 if __name__ == "__main__":
 
     salir = False
-    error = False
 
     # Miramos de que modo queremos que se ejecute el programa, por pantalla, o por ficheros
     modo = procesar_argumentos_entrada(sys.argv)
+    
+    if modo == 2:
+        # Si es modo 2 abrimos ficheros
+        ficheros = run_commands(sys.argv)
+        # Leemos línea a línea
+        contenido = ficheros[0].readlines()
+        automatico_lineas = 0
+    
+    s = time.time()
 
     while not salir:
         
+        error = False
+
         if modo == 1:
+
             # Pedimos la operación a realizar
             entrada = input("Introduce la operación a realizar (introduzca OFF si desea salir del programa):")
             # Si el usuario introduce OFF, significa que desea salir
             if entrada == "OFF":
                 salir = True
+
             #############################################################################
+
             if not salir:
-                try: argumentos = procesar_entrada(entrada)
-                except: error = True
-
-                if not error:
-                    procesar_operacion(argumentos[0])               
-
-
-                    # Los operandos no son enteros --> Error (NOP)
-                    try: entero(argumentos[1])
-                    except: raise error
-                    print(argumentos)
-
+                try: 
+                    argumentos = procesar_entrada(entrada)
+                    r  = procesar_operacion(argumentos)
+                    if r != None: print(r)
+                except: 
+                    print("NE")  
+                    
         else:
-            ficheros = run_commands()
-            # Leemos línea a línea
-            contenido = ficheros[0].readlines()
-            automatico_lineas = 0
+
             # Cuando no quedan más lineas, se sale
             if automatico_lineas == len(contenido):
                 salir = True
                 ficheros[0].close
                 ficheros[1].close
             # Cogemos entrada
-            else: 
+            else:
                 entrada = contenido[automatico_lineas]
-                if entrada[-1] == "\n":
-                    entrada = entrada[:-1]
+                if entrada[-1] == "\n": entrada = entrada[:-1]
                 automatico_lineas += 1
+
             ##############################################################################
+
             if not salir:
-                try: argumentos = procesar_entrada(entrada)
-                except: error = True
-            
+                try: 
+                    argumentos = procesar_entrada(entrada)
+                    r  = procesar_operacion(argumentos)
+                    if r != None: ficheros[1].write(str(r) + "\n")
+                except: 
+                    error = True
+                if not error:
+                    print(f"Realizando operacion {automatico_lineas}")
+                    try: ficheros[1].write(str(procesar_operacion(argumentos)) + "\n")
+                    except: error = True
+                
+                ficheros[1].write("NE\n")
+    
+    
+    f = time.time()
+    print("tiempo:", f-s) 
 
             
