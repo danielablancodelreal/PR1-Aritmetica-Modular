@@ -66,9 +66,7 @@ def procesar_operacion(argumentos):
             entero(argumentos[1])
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
-                r = modular.es_primo(n)
-                if r == None: return "NOP"
-                else: return r
+                return modular.es_primo(n)
             else: raise error
         except: raise error
     
@@ -79,7 +77,8 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 a = argumentos[1][0]
                 b = argumentos[1][1]
-                return modular.lista_primos(a,b)
+                if r == None: return "NOP"
+                else: return r
             else: raise error
         except:
             raise error
