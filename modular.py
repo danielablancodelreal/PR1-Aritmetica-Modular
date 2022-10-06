@@ -3,21 +3,37 @@ import math
 
 ################################ funciones #####################################
 def es_primo(n):
-    if n <= 1:
+    # Cualquier número negativo no es primo
+    # El 1 y el 0 no son números primos, el cero es divisible por cualquier número
+    if n <= 1: 
         return False
-    if n%2 == 0:
+    # Vemos si es par para que en el bucle se salte los pares
+    if n%2 == 0: 
         return False
+    # De entre los impares, va diviendo hasta la raíz cuadrada
     for i in range (3,int(math.sqrt(n)+1),2):
         if n%i == 0: 
             return False
+    # Si no ha sido divisible por ninguna de las anteriores, es primo
     return True
 
 def lista_primos(a,b):
     lista = []
-    if a <= 2: lista.append(2) 
-    if a%2 == 0: a += 1
+    # Si b mayor que a, no hay solución
+    if a > b: 
+        return 
+    # Añadimos el 2 a la lista en caso de que el primer número sea menor o igual que este
+    # aparte, incializamos la busqueda en 3, para saltarnos todos los primos.
+    if a <= 2: 
+        lista.append(2)
+        a = 3 
+    # Si el primer número es par, le sumamos 1
+    if a%2 == 0: 
+        a += 1
+    # El bucle empieza en un número impar para ir de dos en dos hasta b
     for i in range(a,b+1,2):
-        if es_primo(i): lista.append(i)
+        if es_primo(i): 
+            lista.append(i)
     return lista
 
 def factorizar(n):
@@ -39,10 +55,14 @@ def factorizar(n):
     return diccionario
 
 def mcd(a,b):
-    if a < 0 or b <0: return 1
-    elif a%b == 0 or b%a == 0: return min(a,b)
-    elif a == 0 or b == 0: return max(a,b)
-    else: return mcd(min(a,b), max(a,b) % min(a,b))
+    if a < 0 or b <0: 
+        return 1
+    elif a%b == 0 or b%a == 0: 
+        return min(a,b)
+    elif a == 0 or b == 0: 
+        return max(a,b)
+    else: 
+        return mcd(min(a,b), max(a,b) % min(a,b))
 
 def bezout(a,b,l1,l2,mcd,a0,b0):
     if  a != mcd and b != mcd:
@@ -62,13 +82,22 @@ def bezout(a,b,l1,l2,mcd,a0,b0):
         return(mcd, l2[0], l2[1])
 
 def coprimos(a,b):
-    if a < 0: a *= -1
-    if b < 0: b *= -1
-    if a == 1 or b == 1: return True
-    elif a%b == 0 or b%a == 0: return False
-    elif a == 0 or b == 0: return False
-    else: coprimos(min(a,b), max(a,b) % min(a,b))
-    return True
+    # Si son negativos, se transforman a su valor absoluto
+    if a < 0 or b < 0: 
+        a = math.abs(a)
+        b = math.abs(b)
+    # Si uno de los dos es uno, son coprimos
+    if a == 1 or b == 1: 
+        return True
+    # Si uno es divisible entre otro, no son coprimos
+    elif a%b == 0 or b%a == 0: 
+        return False
+    # Si uno de los dos es cero, no son coprimos
+    elif a == 0 or b == 0: 
+        return False
+    # Sino, simplificamos
+    else: 
+        return coprimos(min(a,b), max(a,b) % min(a,b))
 
 def potencia_mod_p(base, exp, p):
     if exp == p and es_primo(p):
