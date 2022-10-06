@@ -140,18 +140,6 @@ def legendre(n,p):
     elif math.sqrt(n%p) == int(math.sqrt(n%p)): return 1
     else: return -1
 
-def coprimos_n(p):
-    factores = []
-    for i in range(len(p)):
-        a = p[i]
-        for j in range(len(p)):
-            b = p[j]
-            divisor = mcd(a,b)
-            if divisor > 1:
-                return False
-            factores.append(mcd(a,b))
-    return True
-
 def resolver_sistema_congruencias(a,b,p):
     if coprimos_n(p) == True:
         a_ec = []
@@ -176,10 +164,15 @@ def mcd_n(lista,a,n):
         return m
     return mcd_n(lista, m, n+1)
 
-    '''
-    lista = [678,936,816]
-    mcd_n(lista, lista[0], 1)
-    '''
+def coprimos_n(p):
+    for i in range(len(p)):
+        a = p[i]
+        for j in range(len(p)):
+            b = p[j]
+            divisor = mcd(a,b)
+            if divisor > 1 and a != b:
+                return False
+    return True
 
 def raiz_mod_p(n,p):
     if es_primo(p) and p != 2:
