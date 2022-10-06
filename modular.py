@@ -100,7 +100,7 @@ def coprimos(a,b):
         return coprimos(min(a,b), max(a,b) % min(a,b))
 
 def potencia_mod_p(base, exp, p):
-    if exp == p and primo(p):
+    if exp == p and es_primo(p):
         return (base % p)
     elif base == 1:
         return base%p
