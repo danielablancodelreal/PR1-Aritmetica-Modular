@@ -1,3 +1,4 @@
+from operator import not_
 import sys
 import modular
 import time
