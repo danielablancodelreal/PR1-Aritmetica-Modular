@@ -140,23 +140,35 @@ def legendre(n,p):
     elif math.sqrt(n%p) == int(math.sqrt(n%p)): return 1
     else: return -1
 
+def coprimos_n(p):
+    factores = []
+    for i in range(len(p)):
+        a = p[i]
+        for j in range(len(p)):
+            b = p[j]
+            divisor = mcd(a,b)
+            if divisor > 1:
+                return False
+            factores.append(mcd(a,b))
+    return True
+
 def resolver_sistema_congruencias(a,b,p):
-    #if mcd_n(p,p[0],1) == 1:
-    a_ec = []
-    M = 1
-    for i in range(len(a)):
-        a_ec.append(inversa_mod_p(a[i],p[i])*b[i])
-        M *= p[i]
+    if coprimos_n(p) == True:
+        a_ec = []
+        M = 1
+        for i in range(len(a)):
+            a_ec.append(inversa_mod_p(a[i],p[i])*b[i])
+            M *= p[i]
+            
+        lista = []
+        for j in range(len(a_ec)):
+            lista.append(inversa_mod_p((M/p[j]), p[j]))
         
-    lista = []
-    for j in range(len(a_ec)):
-        lista.append(inversa_mod_p((M/p[j]), p[j]))
-    
-    x = 0
-    for k in range(len(a_ec)):
-        x += a_ec[k]*lista[k]*(M/p[k])
-    
-    return (int(x%M), M)
+        x = 0
+        for k in range(len(a_ec)):
+            x += a_ec[k]*lista[k]*(M/p[k])
+        
+        return (int(x%M), M)
 
 def mcd_n(lista,a,n):
     m = mcd(a,lista[n])
