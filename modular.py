@@ -18,16 +18,16 @@ def lista_primos(a,b):
         if es_primo(i): lista.append(i)
     return lista
 
-def factorizar(n, lista, exponentes):
-    for i in range(len(lista)):
-        if n%lista[i] == 0:
-            p = lista.index(lista[i])
-            exponentes[p] += 1
-            return factorizar(int(n/lista[i]), lista, exponentes)
+def factorizar(n):
     diccionario = {}
-    for j in range(len(lista)):
-        diccionario[lista[j]] = exponentes[j]
-    return diccionario
+    i = 2
+    while n != 1:
+        if n%i == 0 :
+            n /= i
+            if i in diccionario: diccionario[i] += 1
+            else: diccionario[i] = 1
+        else: i += 1
+    print(diccionario)
 
 '''
 n = 48
