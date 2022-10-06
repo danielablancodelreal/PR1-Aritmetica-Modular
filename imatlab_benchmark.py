@@ -22,7 +22,7 @@ import imatlab
 
 #Número de repeticiones de la toma de tiempos.
 #Aumentarlo disminuye efectos aleatorios o casuales en el código, pero aumenta el coste de ejecución.
-NITERS=100
+NITERS=1
 
 def testRun(in_file:str, out_file:str):
     """ Wrapper para timeit y profile que abre los ficheros proporcionados
@@ -79,8 +79,8 @@ if __name__ == "__main__":
     #            "invTest.txt","eulerTest.txt","sistemaTest.txt","cuadraticaTest.txt"]
     #out_files=["primosTest_out.txt","factorTest_out.txt","mcdTest_out.txt","potenciaTest_out.txt",
     #            "invTest_out.txt","eulerTest_out.txt","sistemaTest_out.txt","cuadraticaTest_out.txt"]
-    in_files=["ejemplosComandos.txt"]
-    out_files=["ejemplosSalida.txt"]
+    in_files=["mcdTest.txt"]
+    out_files=["mcdSalida.txt"]
     
     #Lista de tiempos obtenidos
     runtime=[]
