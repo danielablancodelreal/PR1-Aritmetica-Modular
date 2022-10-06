@@ -19,9 +19,6 @@ def es_primo(n):
 
 def lista_primos(a,b):
     lista = []
-    # Si b mayor que a, no hay solución
-    if a > b: 
-        return 
     # Añadimos el 2 a la lista en caso de que el primer número sea menor o igual que este
     # aparte, incializamos la busqueda en 3, para saltarnos todos los primos.
     if a <= 2: 
@@ -109,9 +106,6 @@ def potencia_mod_p(base, exp, p):
     # Si el exponente es 0, el resulado es 1 módulo p
     elif exp == 0:
         return 1%p
-    # Si el exponente es menor que 0 o el módulo es 0, NOP
-    elif exp < 0 or p == 0:
-        return
     # Exponenciación binaria
     else:
         x = 1
@@ -124,10 +118,11 @@ def potencia_mod_p(base, exp, p):
         return x%p
 
 def inversa_mod_p(n,p):
+    # Solo si son coprimos hay sol
     if coprimos(n,p):
         if n<0:
             p -= n
-            n *= -1
+            n = math.abs(n)
         m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
         return x
 
@@ -146,9 +141,7 @@ def legendre(n,p):
     else: return -1
 
 def resolver_sistema_congruencias(a,b,p):
-    if len(a)>1 and mcd_n(p,p[0],1) != 1:
-        print("Los modulos nos son coprimos uno a uno, se está ejecutando la función 12.")
-    
+    #if mcd_n(p,p[0],1) == 1:
     a_ec = []
     M = 1
     for i in range(len(a)):
