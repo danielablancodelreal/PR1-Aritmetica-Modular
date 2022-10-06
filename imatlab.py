@@ -20,6 +20,9 @@ def procesar_archivos(argumentos):
     return [file1, file2]
 
 def run_commands(file1, file2):
+    
+    exception = False
+
     print("Modo procesamiento por lotes")
     
     contenido = file1.readlines()
@@ -38,11 +41,11 @@ def run_commands(file1, file2):
             if r == None: 
                 exception = True
             else:
-                file2.write("r\n")
+                file2.write(str(r) + "\n")
         except:
             exception = True
         
-        if exception:    
+        if exception:
             file2.write("NOP\n")
 
     # Cuando no quedan más lineas, se sale
