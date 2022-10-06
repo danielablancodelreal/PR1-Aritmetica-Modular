@@ -136,9 +136,16 @@ def euler(n):
     return(contador)
 
 def legendre(n,p):
-    if n%p == 0: return 0
-    elif math.sqrt(n%p) == int(math.sqrt(n%p)): return 1
-    else: return -1
+    #comprobamos que p es primo
+    if not es_primo(p):
+        return
+    #calculamos el símbolo de Legendre según su definición
+    elif n%p == 0: 
+        return 0
+    elif math.sqrt(n%p) == int(math.sqrt(n%p)): 
+        return 1
+    else: 
+        return -1
 
 def coprimos_n(p):
     factores = []
