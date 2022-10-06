@@ -21,6 +21,9 @@ def lista_primos(a,b):
     lista = []
     # Añadimos el 2 a la lista en caso de que el primer número sea menor o igual que este
     # aparte, incializamos la busqueda en 3, para saltarnos todos los primos.
+    # Si b mayor que a, no hay solución
+    if a < b:
+        return
     if a <= 2: 
         lista.append(2)
         a = 3 
@@ -98,6 +101,8 @@ def coprimos(a,b):
 
 def potencia_mod_p(base, exp, p):
     # Pequeño teorema de Fermat
+    if exp > 0 or p != 0:
+        return
     if exp == p and es_primo(p):
         return (base % p)
     # Si la base es 1, da igual el exponente

@@ -35,13 +35,16 @@ def run_commands(file1, file2):
         try: 
             argumentos = procesar_entrada(entrada)
             r  = procesar_operacion(argumentos)
-            if r != None: file2.write(str(r) + "\n")
-        except: 
-            if error:
-                file2.write("NE\n")
-            if exception:
-                file2.write("NOP\n")
-    
+            if r == None: 
+                exception = True
+            else:
+                file2.write("r\n")
+        except:
+            exception = True
+        
+        if exception:    
+            file2.write("NOP\n")
+
     # Cuando no quedan más lineas, se sale
     file1.close
     file2.close
@@ -67,8 +70,8 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
                 return modular.es_primo(n)
-            else: raise error
-        except: raise error
+        except: 
+            raise exception
     
     elif op == "primos":
         # Los operandos no son enteros --> Error (NOP)
@@ -77,11 +80,9 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 a = argumentos[1][0]
                 b = argumentos[1][1]
-                if r == None: return "NOP"
-                else: return r
-            else: raise error
+                return modular.lista_primos(a,b) 
         except:
-            raise error
+            raise exception
     
     elif op == "factorizar":
         # Los operandos no son enteros --> Error (NOP)
@@ -90,9 +91,8 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
                 return modular.factorizar(n)
-            else: raise error
         except:
-            raise error
+            raise exception
     
     elif op == "mcd":
         # Los operandos no son enteros --> Error (NOP)
@@ -102,7 +102,6 @@ def procesar_operacion(argumentos):
                 a = argumentos[1][0]
                 b = argumentos[1][1]
                 return modular.mcd(a,b)
-            else: raise error
         except:
             raise error
     
@@ -114,7 +113,6 @@ def procesar_operacion(argumentos):
                 a = argumentos[1][0]
                 b = argumentos[1][1]
                 return modular.coprimos(a,b)
-            else: raise error
         except:
             raise error
     
@@ -126,10 +124,10 @@ def procesar_operacion(argumentos):
                 base = argumentos[1][0]
                 exp = argumentos[1][1]
                 p = argumentos[1][2]
-                print(op,base,exp,p)
-            else: raise error
+                # Si el exponente es menor que 0 o el módulo es 0, NOP
+                return modular.potencia_mod_p(base,exp,p)
         except:
-            raise error
+            raise exception
     
     elif op == "inv":
         # Los operandos no son enteros --> Error (NOP)
@@ -138,12 +136,9 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 n = argumentos[1][0]
                 p = argumentos[1][1]
-                r = modular.inversa_mod_p(n,p)
-                if r == None: return "NOP"
-                else: return r
-            else: raise error
+                return modular.inversa_mod_p(n,p)
         except:
-            raise error
+            raise exception
     
     elif op == "euler":
         # Los operandos no son enteros --> Error (NOP)
@@ -152,9 +147,8 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
                 print(op,n)
-            else: raise error
         except:
-            raise error
+            raise exception
 
     elif op == "legendre":
         # Los operandos no son enteros --> Error (NOP)
@@ -164,8 +158,8 @@ def procesar_operacion(argumentos):
                 n = argumentos[1][0]
                 p = argumentos[1][1]
                 print(op,n,p)
-            else: raise error
-        except: raise error
+        except: 
+            raise exception
     
     elif op == "resolverSistema":
         arg = []
@@ -180,18 +174,29 @@ def procesar_operacion(argumentos):
                     a.append(int(arg[k][0]))
                     b.append(int(arg[k][1]))
                     p.append(int(arg[k][2]))
-                else: raise error        
             return modular.resolver_sistema_congruencias(a,b,p)
-        except: raise error 
+        except: 
+            raise exception 
 
     elif op == "mcd_n":
         ...
+    
+    elif op == "coprimos_n":
+        arg = []
+        p = []
+        try:
+            arg.append(argumentos[1][0][argumentos[1][0].find("[")+1:argumentos[1][0].find("]")].split(";"))
+            for k in range(len(arg[0])):
+                p.append(int(arg[0][k]))
+            return modular.coprimos_n(p)
+        except: 
+            raise exception 
 
     elif op == "raiz":
         ...
 
     else:
-        raise error
+        raise exception
 
 def entero(operandos):
     # Para cada número de la lista, comprobamos si es entero
@@ -218,7 +223,7 @@ if __name__ == "__main__":
         exception = False
 
         if modo == 1:
-            print("Modo interactivo")
+            
             # Pedimos la operación a realizar
             entrada = input("Introduce la operación a realizar (introduzca OFF si desea salir del programa):")
             # Si el usuario introduce OFF, significa que desea salir
@@ -231,14 +236,18 @@ if __name__ == "__main__":
                 try: 
                     argumentos = procesar_entrada(entrada)
                     r  = procesar_operacion(argumentos)
-                    if r != None: print(r)
-                except: 
-                    if error:
-                        print("NE")  
-                    if exception:
-                        print("NOP")
-                    
+                    if r == None: 
+                        exception = True
+                    else:
+                        print(r)
+                except:
+                    exception = True
+                
+                if exception:    
+                    print("NOP")
+                          
         else:
+
             # Llamamos función run commands
             run_commands(ficheros[0], ficheros[1])
 
