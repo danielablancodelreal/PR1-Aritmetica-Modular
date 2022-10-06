@@ -4,14 +4,12 @@ import time
 
 def procesar_argumentos_entrada(argumentos):
     if len(sys.argv) == 1:
-        print("Modo interactivo")
         modo = 1
     elif len(sys.argv) == 3:
-        print("Modo procesamiento por lotes")
         modo = 2
     return modo
 
-def run_commands(argumentos):
+def procesar_archivos(argumentos):
     # ficheros
     fichero_entrada = sys.argv[1]
     fichero_salida = sys.argv[2]
@@ -19,8 +17,34 @@ def run_commands(argumentos):
     file1 = open(fichero_entrada, "r")
     file2 = open(fichero_salida, "w")
     # devolvemos ficheros
-    ficheros = [file1, file2]
-    return ficheros
+    return [file1, file2]
+
+def run_commands(file1, file2):
+    print("Modo procesamiento por lotes")
+    
+    contenido = file1.readlines()
+    automatico_lineas = 0
+
+    while automatico_lineas != len(contenido):
+
+        # Cogemos entrada
+        entrada = contenido[automatico_lineas]
+        if entrada[-1] == "\n": entrada = entrada[:-1]
+        automatico_lineas += 1
+
+        try: 
+            argumentos = procesar_entrada(entrada)
+            r  = procesar_operacion(argumentos)
+            if r != None: file2.write(str(r) + "\n")
+        except: 
+            if error:
+                file2.write("NE\n")
+            if exception:
+                file2.write("NOP\n")
+    
+    # Cuando no quedan más lineas, se sale
+    file1.close
+    file2.close
 
 def procesar_entrada(entrada):
     try:
@@ -42,7 +66,9 @@ def procesar_operacion(argumentos):
             entero(argumentos[1])
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
-                return modular.es_primo(n)
+                r = modular.es_primo(n)
+                if r == None: return "NOP"
+                else: return r
             else: raise error
         except: raise error
     
@@ -169,6 +195,7 @@ def procesar_operacion(argumentos):
         raise error
 
 def entero(operandos):
+    # Para cada número de la lista, comprobamos si es entero
     for num in range(len(operandos)):
         try:
             operandos[num] = int(operandos[num])
@@ -184,12 +211,7 @@ if __name__ == "__main__":
     
     if modo == 2:
         # Si es modo 2 abrimos ficheros
-        ficheros = run_commands(sys.argv)
-        # Leemos línea a línea
-        contenido = ficheros[0].readlines()
-        automatico_lineas = 0
-    
-    s = time.time()
+        ficheros = procesar_archivos(sys.argv)
 
     while not salir:
         
@@ -197,7 +219,7 @@ if __name__ == "__main__":
         exception = False
 
         if modo == 1:
-
+            print("Modo interactivo")
             # Pedimos la operación a realizar
             entrada = input("Introduce la operación a realizar (introduzca OFF si desea salir del programa):")
             # Si el usuario introduce OFF, significa que desea salir
@@ -218,30 +240,8 @@ if __name__ == "__main__":
                         print("NOP")
                     
         else:
+            # Llamamos función run commands
+            run_commands(ficheros[0], ficheros[1])
 
-            # Cuando no quedan más lineas, se sale
-            if automatico_lineas == len(contenido):
-                salir = True
-                ficheros[0].close
-                ficheros[1].close
-            # Cogemos entrada
-            else:
-                entrada = contenido[automatico_lineas]
-                if entrada[-1] == "\n": entrada = entrada[:-1]
-                automatico_lineas += 1
-
-            ##############################################################################
-
-            if not salir:
-                try: 
-                    argumentos = procesar_entrada(entrada)
-                    r  = procesar_operacion(argumentos)
-                    if r != None: ficheros[1].write(str(r) + "\n")
-                except: 
-                    ficheros[1].write("NE\n")
-    
-    
-    f = time.time()
-    print("tiempo:", f-s) 
 
             
