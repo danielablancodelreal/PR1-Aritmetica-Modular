@@ -100,12 +100,19 @@ def coprimos(a,b):
         return coprimos(min(a,b), max(a,b) % min(a,b))
 
 def potencia_mod_p(base, exp, p):
+    # Pequeño teorema de Fermat
     if exp == p and es_primo(p):
         return (base % p)
+    # Si la base es 1, da igual el exponente
     elif base == 1:
         return base%p
+    # Si el exponente es 0, el resulado es 1 módulo p
     elif exp == 0:
         return 1%p
+    # Si el exponente es menor que 0 o el módulo es 0, NOP
+    elif exp < 0 or p == 0:
+        return
+    # Exponenciación binaria
     else:
         x = 1
         while exp > 0:
