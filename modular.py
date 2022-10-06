@@ -100,14 +100,21 @@ def coprimos(a,b):
         return coprimos(min(a,b), max(a,b) % min(a,b))
 
 def potencia_mod_p(base, exp, p):
-    if exp == p and es_primo(p):
+    if exp == p and primo(p):
         return (base % p)
-    x = 1
-    while exp > 0:
-        if exp % 2 == 1: x = (x*base) % p
-        base = base**2 % p
-        exp = exp//2
-    return x % p
+    elif base == 1:
+        return base%p
+    elif exp == 0:
+        return 1%p
+    else:
+        x = 1
+        while exp > 0:
+            print("e: ",exp)
+            if exp%2 == 1:
+                x = (x*base)%p
+            base = base*base%p
+            exp = exp//2
+        return x%p
 
 def inversa_mod_p(n,p):
     if coprimos(n,p):
