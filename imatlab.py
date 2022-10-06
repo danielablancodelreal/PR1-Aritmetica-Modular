@@ -45,8 +45,7 @@ def procesar_operacion(argumentos):
                 n = argumentos[1][0]
                 return modular.es_primo(n)
             else: raise error
-        except:
-            raise error
+        except: raise error
     
     elif op == "primos":
         # Los operandos no son enteros --> Error (NOP)
@@ -55,7 +54,7 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 a = argumentos[1][0]
                 b = argumentos[1][1]
-                print(op,a,b)
+                return modular.lista_primos(a,b)
             else: raise error
         except:
             raise error
@@ -66,7 +65,7 @@ def procesar_operacion(argumentos):
             entero(argumentos[1])
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
-                print(op,n)
+                return modular.factorizar(n)
             else: raise error
         except:
             raise error

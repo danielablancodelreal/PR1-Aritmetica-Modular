@@ -5,7 +5,9 @@ import math
 def es_primo(n):
     if n <= 1:
         return False
-    for i in range (2,int(math.sqrt(n)+1)):
+    if n%2 == 0:
+        return False
+    for i in range (3,int(math.sqrt(n)+1),2):
         if n%i == 0: 
             return False
     return True
@@ -21,20 +23,20 @@ def lista_primos(a,b):
 def factorizar(n):
     diccionario = {}
     i = 2
+    contador= 0
     while n != 1:
-        if n%i == 0 :
-            n /= i
-            if i in diccionario: diccionario[i] += 1
-            else: diccionario[i] = 1
-        else: i += 1
+        if n%i == 0:
+            contador += 1
+            n = n//i
+        else: 
+            if contador != 0: diccionario[i] = contador
+            contador = 0
+            i += 1
+            if es_primo(n):
+                diccionario[n] = 1
+                n = 1
     print(diccionario)
-
-'''
-n = 48
-lista = lista_primos(2,n)
-exponentes = [0]*len(lista)
-factorizar(n, lista, exponentes)
-'''
+    return diccionario
 
 def mcd(a,b):
     if a < 0 or b <0: return 1
