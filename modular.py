@@ -22,7 +22,7 @@ def lista_primos(a,b):
     # Añadimos el 2 a la lista en caso de que el primer número sea menor o igual que este
     # aparte, incializamos la busqueda en 3, para saltarnos todos los primos.
     # Si b mayor que a, no hay solución
-    if a < b:
+    if a > b:
         return
     if a <= 2: 
         lista.append(2)
