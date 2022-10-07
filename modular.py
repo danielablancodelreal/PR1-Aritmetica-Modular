@@ -134,11 +134,14 @@ def inversa_mod_p(n,p):
         return x
 
 def euler(n):
+    #Comprobamos que n es primo para poder aplicar una propiedad
     if es_primo(n):
         return n-1
     dic = factorizar(n)
+    #Factorizamos ya que si mcd(a,b) = 1, euler(a*b) == euler(a)*euler(b)
     lista = list(dic.keys())
     contador = 1
+    # euler(p**k) == (p-1)*p**(k-1)
     for i in range(len(lista)):
         contador *= (lista[i]-1)*(lista[i]**(dic[lista[i]]-1))
     return contador
