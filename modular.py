@@ -181,11 +181,9 @@ def mcd_n(lista,a,n):
 
 def coprimos_n(p):
     for i in range(len(p)):
-        a = p[i]
-        for j in range(len(p)):
-            b = p[j]
-            divisor = mcd(a,b)
-            if divisor > 1 and a != b:
+        for j in range(i+1, len(p)):
+            divisor = mcd(p[i],p[j])
+            if divisor > 1:
                 return False
     return True
 
