@@ -146,7 +146,7 @@ def procesar_operacion(argumentos):
             entero(argumentos[1])
             if len(argumentos[1]) == 1:
                 n = argumentos[1][0]
-                print(op,n)
+                return modular.euler(n)
         except:
             raise exception
 
@@ -157,7 +157,7 @@ def procesar_operacion(argumentos):
             if len(argumentos[1]) == 2:
                 n = argumentos[1][0]
                 p = argumentos[1][1]
-                print(op,n,p)
+                return modular.legendre
         except: 
             raise exception
     
@@ -181,18 +181,27 @@ def procesar_operacion(argumentos):
             raise exception 
 
     elif op == "mcd_n":
-        ...
-    
-    elif op == "coprimos_n":
-        arg = []
         p = []
         try:
-            arg.append(argumentos[1][0][argumentos[1][0].find("[")+1:argumentos[1][0].find("]")].split(";"))
-            for k in range(len(arg[0])):
-                p.append(int(arg[0][k]))
+            argumentos[1][0] = argumentos[1][0][argumentos[1][0].find("[")+1:len(argumentos[1][0])+1]
+            argumentos[1][len(argumentos[1])-1] = argumentos[1][len(argumentos[1])-1][0:argumentos[1][len(argumentos[1])-1].find("]")]
+            for k in range(len(argumentos[1])):
+                p.append(int(argumentos[1][k]))
+            return modular.mcd_n(p, p[0], 1)
+        except: 
+            raise exception
+    
+    elif op == "coprimos_n":
+        p = []
+        try:
+            argumentos[1][0] = argumentos[1][0][argumentos[1][0].find("[")+1:len(argumentos[1][0])+1]
+            argumentos[1][len(argumentos[1])-1] = argumentos[1][len(argumentos[1])-1][0:argumentos[1][len(argumentos[1])-1].find("]")]
+            for k in range(len(argumentos[1])):
+                p.append(int(argumentos[1][k]))
+            print(p)
             return modular.coprimos_n(p)
         except: 
-            raise exception 
+            raise exception
 
     elif op == "raiz":
         ...
