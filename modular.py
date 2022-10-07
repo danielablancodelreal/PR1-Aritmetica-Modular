@@ -85,8 +85,8 @@ def bezout(a,b,l1,l2,mcd,a0,b0):
 def coprimos(a,b):
     # Si son negativos, se transforman a su valor absoluto
     if a < 0 or b < 0: 
-        a = math.abs(a)
-        b = math.abs(b)
+        a = abs(a)
+        b = abs(b)
     # Si uno de los dos es uno, son coprimos
     if a == 1 or b == 1: 
         return True
@@ -128,9 +128,10 @@ def inversa_mod_p(n,p):
     # Solo si son coprimos hay sol
     if coprimos(n,p):
         if n<0:
-            p -= n
-            n = math.abs(n)
-        m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
+            n += p
+            m, x, y = bezout(n,p,[1,1],[0,1], mcd(n,p),n,p)
+        else: 
+            m, x, y = bezout(n,p,[1,0],[0,1], mcd(n,p),n,p)
         return x
 
 def euler(n):
