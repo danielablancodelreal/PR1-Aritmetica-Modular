@@ -39,19 +39,20 @@ def lista_primos(a,b):
 def factorizar(n):
     diccionario = {}
     i = 2
+    a = n
     contador= 0
-    while n != 1:
+    while i*i < a:
         if n%i == 0:
             contador += 1
             n = n//i
-        else: 
-            if contador != 0: diccionario[i] = contador
-            contador = 0
+        else:
+            if contador != 0: 
+                diccionario[i] = contador
+                contador = 0
             i += 1
-            if es_primo(n):
-                diccionario[n] = 1
-                n = 1
-    print(diccionario)
+            a = n
+    if n > 1:
+        diccionario[n] = 1
     return diccionario
 
 def mcd(a,b):
@@ -101,8 +102,10 @@ def coprimos(a,b):
 
 def potencia_mod_p(base, exp, p):
     # Pequeño teorema de Fermat
-    if exp > 0 or p != 0:
+    if p == 0:
         return
+    if exp < 0:
+        exp %= p
     if exp == p and es_primo(p):
         return (base % p)
     # Si la base es 1, da igual el exponente
@@ -115,7 +118,6 @@ def potencia_mod_p(base, exp, p):
     else:
         x = 1
         while exp > 0:
-            print("e: ",exp)
             if exp%2 == 1:
                 x = (x*base)%p
             base = base*base%p

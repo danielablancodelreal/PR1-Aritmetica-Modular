@@ -39,13 +39,10 @@ def run_commands(file1, file2):
             argumentos = procesar_entrada(entrada)
             r  = procesar_operacion(argumentos)
             if r == None: 
-                exception = True
+                file2.write("NE\n")
             else:
                 file2.write(str(r) + "\n")
         except:
-            exception = True
-        
-        if exception:
             file2.write("NOP\n")
 
     # Cuando no quedan más lineas, se sale
@@ -173,7 +170,9 @@ def procesar_operacion(argumentos):
             for l in range(len(argumentos[1])):
                 arg.append(argumentos[1][l][argumentos[1][l].find("[")+1:argumentos[1][l].find("]")].split(";"))
             for k in range(len(arg)):
-                if len(arg[k]) == 3:
+                if len(arg[k]) != 3:
+                    return
+                else:
                     a.append(int(arg[k][0]))
                     b.append(int(arg[k][1]))
                     p.append(int(arg[k][2]))
@@ -240,14 +239,12 @@ if __name__ == "__main__":
                     argumentos = procesar_entrada(entrada)
                     r  = procesar_operacion(argumentos)
                     if r == None: 
-                        exception = True
+                        print("NE")
                     else:
                         print(r)
                 except:
-                    exception = True
-                
-                if exception:    
-                    print("NOP")
+                    print("NOP")    
+                    
                           
         else:
 
