@@ -134,13 +134,14 @@ def inversa_mod_p(n,p):
         return x
 
 def euler(n):
-    contador = 0
     if es_primo(n):
         return n-1
-    for i in range(1,n):
-        if mcd(i,n) == 1:
-            contador += 1
-    return(contador)
+    dic = factorizar(n)
+    lista = list(dic.keys())
+    contador = 1
+    for i in range(len(lista)):
+        contador *= (lista[i]-1)*(lista[i]**(dic[lista[i]]-1))
+    return contador
 
 def legendre(n,p):
     #comprobamos que p es primo
